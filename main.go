@@ -3,7 +3,6 @@ package main
 import (
 	"andre/belajar-golang-restful-api/app"
 	"andre/belajar-golang-restful-api/controller"
-	"andre/belajar-golang-restful-api/exception"
 	"andre/belajar-golang-restful-api/helper"
 	"andre/belajar-golang-restful-api/middleware"
 	"andre/belajar-golang-restful-api/repository"
@@ -12,7 +11,6 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/julienschmidt/httprouter"
 )
 
 func main() {
@@ -22,15 +20,7 @@ func main() {
 	categoryService := service.NewCategoryService(categoryRepository, db, validate)
 	categoyController := controller.NewCategoryController(categoryService)
 
-	router := httprouter.New()
-
-	router.GET("/api/categories", categoyController.FindAll)
-	router.GET("/api/categories/:categoryId", categoyController.FindById)
-	router.POST("/api/categories", categoyController.Create)
-	router.PUT("/api/categories/:categoryId", categoyController.Update)
-	router.DELETE("/api/categories/:categoryId", categoyController.Delete)
-
-	router.PanicHandler = exception.ErrorHandler
+	router := app.NewRouter(categoyController)
 
 	server := http.Server{
 		Addr:    "localhost:3000",
