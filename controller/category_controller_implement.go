@@ -15,7 +15,7 @@ type CategoryControllerImplement struct {
 }
 
 // same like Polimorfisme
-func NewCategoryController(categoryService service.CategoryService) CategoryController {
+func NewCategoryController(categoryService service.CategoryService) *CategoryControllerImplement {
 	return &CategoryControllerImplement{
 		CategoryService: categoryService,
 	}
